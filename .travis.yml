@@ -5,6 +5,9 @@ before_deploy:
   - docker build --build-arg ES_URL=${ES_URL} -t parking-sensor-api:${TRAVIS_BUILD_NUMBER} .
   - docker push parking-sensor-api:${TRAVIS_BUILD_NUMBER}
 
+deploy:
+  - echo "Deploy"
+
 jobs:
   include:
     - name: "Pushing to ECR"
