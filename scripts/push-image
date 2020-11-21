@@ -5,5 +5,9 @@ if ! [ -x "$(command -v aws)" ]; then curl "https://awscli.amazonaws.com/awscli-
 aws configure set default.region ap-southeast-2
 aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 972517480395.dkr.ecr.ap-southeast-2.amazonaws.com
 docker build --build-arg ES_URL=$ES_URL -t 972517480395.dkr.ecr.ap-southeast-2.amazonaws.com/parking-sensor-api:$TRAVIS_BUILD_NUMBER .
-aws ecr describe-repositories --repository-names parking-sensor-api || aws ecr create-repository --repository-name parking-sensor-api
+
+aws ecr describe-repositories --repository-names parking-sensor-api || \
+aws ecr create-repository --repository-name parking-sensor-api && \
+aws ecr put-lifecycle-policy --repository-name parking-sensor-api --lifecycle-policy-text '{"rules":[{"rulePriority":1,"description":"Expire old images","selection":{"tagStatus":"any","countType":"imageCountMoreThan","countNumber":1},"action":{"type":"expire"}}]}'
+
 docker push 972517480395.dkr.ecr.ap-southeast-2.amazonaws.com/parking-sensor-api:$TRAVIS_BUILD_NUMBER
