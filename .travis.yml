@@ -2,8 +2,8 @@ language: bash
 
 before_deploy:
   - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 572269113430.dkr.ecr.ap-southeast-2.amazonaws.com
-  - docker build -t parking-sensor-api:$TRAVIS_BUILD_NUMBER .
-  - docker push parking-sensor-api:$TRAVIS_BUILD_NUMBER
+  - docker build --build-arg ES_URL=${ES_URL} -t parking-sensor-api:${TRAVIS_BUILD_NUMBER} .
+  - docker push parking-sensor-api:${TRAVIS_BUILD_NUMBER}
 
 jobs:
   include:

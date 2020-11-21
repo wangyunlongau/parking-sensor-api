@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	Elasticsearch "github.com/elastic/go-elasticsearch/v7"
 	"github.com/gorilla/mux"
@@ -33,9 +34,10 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	elasticsearchURL := os.Getenv("ES_URL")
 	cfg := Elasticsearch.Config{
 		Addresses: []string{
-			"localhost:8080",
+			elasticsearchURL,
 		},
 	}
 
