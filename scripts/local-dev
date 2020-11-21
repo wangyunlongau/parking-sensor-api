@@ -1,0 +1,1 @@
+docker build --build-arg ES_URL=$ES_URL -t parking-sensor-api . && docker run -d -p 8080:8080 parking-sensor-api
